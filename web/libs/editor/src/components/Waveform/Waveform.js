@@ -4,6 +4,7 @@ import throttle from 'lodash.throttle';
 import { ZoomInOutlined, ZoomOutOutlined } from '@ant-design/icons';
 import RegionsPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.regions.min.js';
 import TimelinePlugin from 'wavesurfer.js/dist/plugin/wavesurfer.timeline.min.js';
+import SpectrogramPlugin from "wavesurfer.js/dist/plugin/wavesurfer.spectrogram.min.js";
 import WaveSurfer from 'wavesurfer.js';
 import styles from './Waveform.module.scss';
 import globalStyles from '../../styles/global.module.scss';
@@ -292,6 +293,19 @@ export default class Waveform extends React.Component {
       cursorWidth: this.props.cursorWidth,
       cursorColor: this.props.cursorColor,
       barHeight: 1,
+      plugins: [
+        SpectrogramPlugin.create({
+            labels: true,
+            labelsColor: "white",
+            labelsHzColor: "white",
+            height: 256,
+            splitChannels: true,
+            frequencyMin: 0,
+            frequencyMax: 125000,
+            fftSamples: 1024,
+          }
+        )
+      ],
     };
 
     if (this.props.regions) {
