@@ -11,14 +11,6 @@ import { FF_DEV_1713, FF_DEV_2715, isFF } from '../../../utils/feature-flags';
 let _tagView = HtxAudio;
 let _model = AudioModel.AudioModel;
 
-if (isFF(FF_DEV_1713)) {
-  _tagView = AudioNext;
-}
-
-if (isFF(FF_DEV_2715)) {
-  _tagView = AudioUltra;
-  _model = AudioUltraModel.AudioModel;
-}
 
 // Replacing both Audio and AudioPlus
 // Must add a deprecation warning

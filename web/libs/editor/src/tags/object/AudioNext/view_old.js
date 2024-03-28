@@ -36,7 +36,7 @@ const HtxAudioView = ({ store, item }) => {
           defaultSpeed={Number(item.defaultspeed)}
           defaultZoom={Number(item.defaultzoom)}
           volume={item.volume}
-          regions={true}
+          regions={false}
           height={item.height}
           cursorColor={item.cursorcolor}
           cursorWidth={item.cursorwidth}
