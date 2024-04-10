@@ -1,10 +1,8 @@
-import CursorPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.cursor';
 import React from 'react';
 import throttle from 'lodash.throttle';
 import { ZoomInOutlined, ZoomOutOutlined } from '@ant-design/icons';
-import RegionsPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.regions.min.js';
-import TimelinePlugin from 'wavesurfer.js/dist/plugin/wavesurfer.timeline.min.js';
-import SpectrogramPlugin from "wavesurfer.js/dist/plugin/wavesurfer.spectrogram.min.js";
+import RegionsPlugin from 'wavesurfer.js/dist/plugins/regions.esm';
+import TimelinePlugin from 'wavesurfer.js/dist/plugins/timeline.esm';
 import WaveSurfer from 'wavesurfer.js';
 import styles from './Waveform.module.scss';
 import globalStyles from '../../styles/global.module.scss';
@@ -293,19 +291,6 @@ export default class Waveform extends React.Component {
       cursorWidth: this.props.cursorWidth,
       cursorColor: this.props.cursorColor,
       barHeight: 1,
-      plugins: [
-        SpectrogramPlugin.create({
-            labels: true,
-            labelsColor: "white",
-            labelsHzColor: "white",
-            height: 256,
-            splitChannels: true,
-            frequencyMin: 0,
-            frequencyMax: 125000,
-            fftSamples: 1024,
-          }
-        )
-      ],
     };
 
     if (this.props.regions) {
@@ -327,11 +312,6 @@ export default class Waveform extends React.Component {
             secondaryColor: 'blue', // the color of the non-modulo-ten notch lines. The default is '#c0c0c0'.
             primaryFontColor: '#000', // the color of the non-modulo-ten time labels (e.g. 10sec, 20sec). The default is '#000'.
             secondaryFontColor: '#000',
-          }),
-          CursorPlugin.create({
-            wrapper: this.$waveform,
-            showTime: true,
-            opacity: 1,
           }),
         ],
       };
