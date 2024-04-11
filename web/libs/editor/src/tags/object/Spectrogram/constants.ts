@@ -1,3 +1,5 @@
+// Copyright (c) 2024 FHNW, licensed under MIT License
+// Based on ../AudioNext/constants.ts
 export const WS_ZOOM_X = {
   min: 1,
   max: 1500,

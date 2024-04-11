@@ -1,3 +1,5 @@
+// Copyright (c) 2024 FHNW, licensed under MIT License
+// Based on ../AudioNext/model.js
 import { getRoot, getType, types } from 'mobx-state-tree';
 import { customTypes } from '../../../core/CustomTypes';
 import { guidGenerator } from '../../../core/Helpers.ts';
@@ -10,7 +12,6 @@ import Utils from '../../../utils';
 import { isDefined } from '../../../utils/utilities';
 import ObjectBase from '../Base';
 import { WS_SPEED, WS_VOLUME, WS_ZOOM_X } from './constants';
-
 
 /**
  * The Audio tag plays audio and shows its waveform. Use for audio annotation tasks where you want to label regions of audio, see the waveform, and manipulate audio during annotation.

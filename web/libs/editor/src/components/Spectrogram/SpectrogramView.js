@@ -1,3 +1,5 @@
+// Copyright (c) 2024 FHNW, licensed under MIT License
+// Based on ../Waveform/Waveform.js
 import React, { Component } from 'react';
 import SpectrogramPlugin from "wavesurfer.js/dist/plugins/spectrogram.esm";
 import WaveSurfer from 'wavesurfer.js';

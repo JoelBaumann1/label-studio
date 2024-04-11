@@ -1,4 +1,5 @@
-
+// Copyright (c) 2024 FHNW, licensed under MIT License
+// Based on ../AudioNext/view_old.js
 import { inject, observer } from 'mobx-react';
 import { Fragment } from 'react';
 import { ErrorMessage } from '../../../components/ErrorMessage/ErrorMessage';
