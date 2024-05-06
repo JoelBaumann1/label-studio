@@ -50,28 +50,49 @@ export default class SpectrogramView extends Component {
       ],
     });
 
+    this.spec_canvas = this.spec_plugin.canvas;
+    this.overlay_canvas = document.createElement('canvas');
+    this.overlay_canvas.style.position = 'absolute'; // Ensure overlay canvas is positioned absolutely
+    this.overlay_canvas.style.top = '0'; // Adjust top position to match spectrogram canvas
+    this.overlay_canvas.style.left = '0';
+    this.overlay_canvas.style.width = '100%';
+    this.overlay_canvas.style.height = '100%';
+    this.overlay_canvas.style.zIndex = '5';
+    this.spec_canvas.parentElement.appendChild(this.overlay_canvas);
+
+    this.overlay_canvas.addEventListener('mousedown', this.startDrawing);
+    this.overlay_canvas.addEventListener('mouseup', this.draw);
+    this.overlay_canvas.addEventListener('mouseleave', this.finishDrawing);
+
     this.wavesurfer.on('ready', () => {
       this.wavesurfer.zoom(this.state.zoomLevel);
+      this.overlay_canvas.width = this.spec_canvas.width;
+      this.overlay_canvas.height = this.spec_canvas.height;
     });
 
-    // Add event listeners for drawing
-    const canvas = this.spec_plugin.canvas;
-    canvas.addEventListener('mousedown', this.startDrawing);
-    canvas.addEventListener('mouseup', this.draw);
-    canvas.addEventListener('mouseleave', this.finishDrawing);
   }
 
-  componentWillUnmount() {
-    // Remove event listeners to prevent memory leaks
-    const canvas = this.spec_plugin.canvas;
-    canvas.removeEventListener('mousedown', this.startDrawing);
-    canvas.removeEventListener('mouseup', this.draw);
-    canvas.removeEventListener('mouseleave', this.finishDrawing);
-  }
+
+  calculateFrequency = (y, canvasHeight) => {
+    return this.spec_plugin.frequencyMax - (y / canvasHeight) * this.spec_plugin.frequencyMax - this.spec_plugin.frequencyMin;
+  };
+
+  calculateTime = (x, canvasWidth) => {
+    return (x / canvasWidth) * this.wavesurfer.getDuration();
+  };
+
+  logTimeAndFrequency = (x, y, width, height, canvasHeight, canvasWidth) => {
+    const frequencyEnd = this.calculateFrequency(y, canvasHeight);
+    const frequencyStart = this.calculateFrequency(y + height, canvasHeight);
+    const timeStart = this.calculateTime(x, canvasWidth);
+    const timeEnd = this.calculateTime(x + width, canvasWidth);
+
+
+    console.log(`Time: ${timeStart} - ${timeEnd}, Frequency: ${frequencyStart} - ${frequencyEnd}`);
+  };
 
   startDrawing = (event) => {
-    const canvas = this.spec_plugin.canvas;
-    const boundingRect = canvas.getBoundingClientRect();
+    const boundingRect = this.overlay_canvas.getBoundingClientRect();
     this.startX = event.clientX - boundingRect.left;
     this.startY = event.clientY - boundingRect.top;
 
@@ -80,7 +101,7 @@ export default class SpectrogramView extends Component {
   draw = (event) => {
     if (!this.state.isDrawing) return;
 
-    const canvas = this.spec_plugin.canvas;
+    const canvas = this.overlay_canvas;
     const ctx = canvas.getContext('2d');
     const boundingRect = canvas.getBoundingClientRect();
     const x = event.clientX - boundingRect.left;
@@ -90,6 +111,9 @@ export default class SpectrogramView extends Component {
     ctx.strokeStyle = 'white';
 
     ctx.beginPath();
+
+    this.logTimeAndFrequency(this.startX, this.startY,x - this.startX, y - this.startY, canvas.height, canvas.width);
+
     ctx.rect(this.startX, this.startY, x - this.startX, y - this.startY);
     ctx.fill();
     ctx.stroke();
